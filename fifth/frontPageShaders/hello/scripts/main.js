@@ -5,14 +5,22 @@ function main()
     var canvas = document.getElementById("cc");
     var gl = canvas.getContext('webgl2');
     
+    var numShaders = 3;
+    var rnd = Math.floor(Math.random() * numShaders);
+    
+    var shaderSourceContainer = 
+    [
+        [rayMarchOneVS, rayMarchOneFS],
+        [noiseOneVS, noiseOneFS],
+        [trefoilVS, trefoilFS]
+    ];
     // ---------------- Basis Vectors Init ----------------
     var renderables = [];
 
-    var helloProgram = createProgramFromSources(gl, helloVS, helloFS);
+    var helloProgram = createProgramFromSources(gl, shaderSourceContainer[rnd][0], shaderSourceContainer[rnd][1]);
     var helloProgramUTime = gl.getUniformLocation(helloProgram, "time");
     var helloProgramUResolution = gl.getUniformLocation(helloProgram, "resolution");
     
-    // TESTING
     var quadVAO = gl.createVertexArray();
     var quadVBO = gl.createBuffer();
     gl.bindVertexArray(quadVAO);
@@ -47,7 +55,7 @@ function main()
     var seconds = 0.0;
     var deltaTime = 0.0;
     
-    // -- no need to do this more than once, might as well be here
+    // -- no need to do this more than once
     gl.useProgram(helloProgram)
     gl.bindVertexArray(quadVAO);
 

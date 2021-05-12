@@ -48,16 +48,17 @@ body a {
   grid-template-rows: auto; }
 
 #shader-calendar-container {
+  background-color: white;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   width: 100%;
-  height: 91.5vh;
+  height: 91.2vh;
   margin: 0px;
   padding: 0px; }
 
 #shader-iframe {
-  border-bottom-right-radius: 8px;
-  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
   width: 100%;
   height: 100%;
   border: none;
@@ -67,4 +68,4 @@ body a {
   #top-container {
     width: 60%; } }
 
-/*# sourceMappingURL=index.css.map */
+/*# sourceMappingURL=blog.css.map */
