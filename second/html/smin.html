@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ian Stranathan</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/smin.css" />
+
+    <!-- jqMath lib-->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=UnifrakturMaguntia">
+    <link rel="stylesheet" href="../middleware/mathscribe/jqmath-0.4.3.css">
+    <script src="../middleware/mathscribe/jquery-1.4.3.min.js"></script>
+    <script src="../middleware/mathscribe/jqmath-etc-0.4.6.min.js" charset="utf-8"></script>
+
+    <!-- highlight.js for code formatting -->
+    <link rel="stylesheet" href="../middleware/highlight/styles/night-owl.css">
+    <script src="../middleware/highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- webgl setup -->
+    <script type="text/javascript" src="../scripts/glUtils.js"></script>
+
+  </head>
+
+  <body id="body">
+    <div id="top-grid">
+
+      <div id="nav-bar-grid">
+        <div id="name">
+          <a href="../index.html" class="underLineLink">Ian Stranathan</a>
+        </div>
+        <div id="nav-bar-main">
+          <a href="blog.html" class="underLineLink navBarLink">Blog</a>
+          <a href="articles.html" class="underLineLink navBarLink">Articles</a>
+          <a href="indexStories.html" class="underLineLink navBarLink">Stories</a>
+          <a href="#" class="underLineLink navBarLink">Projects</a>
+        </div>
+
+        <div id="dropdown" class="dropdown">
+          <div id="menu-icon-grid" class="menuIcon" onclick="menuDropDown()">
+
+            <div class="menu-icon-bar menuIcon topBar"></div>
+            <div class="menu-icon-bar menuIcon middleBar"></div>
+            <div class="menu-icon-bar menuIcon bottomBar"></div>
+
+          </div>
+          <div id="drop-down-menu" class="dropdown-content">
+
+            <a href="blog.html">Blog</a>
+            <a href="articles.html">Articles</a>
+            <a href="indexStories.html">Stories</a>
+            <a href="#">Projects</a>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div id="content">
+        <h2 style="text-align: center;">Polynomial Smooth Minimum</h2>
+        <span id="le-line"></span>
+        <p>
+          TL;DR: Live shader at bottom of page.
+          <br>
+          Iñigo Quilez, hallowed be his name, made a function useful for the procedural modeling of organic shapes called smin.
+          He wrote a very nice article about it <a href="https://www.iquilezles.org/www/articles/smin/smin.htm"> here </a>.
+          It's a foundational technique to get natural looking shapes because nature is continuous (At least that's what they told me in school anyway) and a simple union of two shapes is not.
+        </p>
+        <p style="text-align: center">
+          "The first time you see something it's a trick, the second time it's a technique" -Richard Foote
+        </p>
+        <p>
+          I'm writing this for anyone that is trying to learn this stuff and for whom it's still a trick.
+        </p>
+        <p>
+          This is also a great way to catalogue my own thoughts, I can only reluctantly use some derived result if I don't understand where it's coming from. (Incidentally, this made undergraduate physics and math work a little unbearable.)<br>
+          It was difficult to follow Iq's derivation in his article, surely the material is just so obvious to him that the terseness with which his derivation was written wasn't intentional.
+          In my opinion, especially for the beginner like me, derivations are not the place for compactness, especially for something so foundational. <br>
+          I normally am able to follow this kind of thing fairly well, so I can only imagine other people would also be a bit confused.
+          If you want to see the same derivation from someone else, my main resource for understanding this besides the original article was
+          <a href="http://www.viniciusgraciano.com/blog/smin/">Vinicius Graciano</a>
+          ; all credit goes to him, even though his derivation is almost as equally terse, it spurned my thoughts in the right direction.
+        </p>
+        <p>
+          It really gave me pause to see a couple really smart guys I follow using this function without fulling understanding it or deriving it correctly.
+          See: <a href="https://www.youtube.com/watch?v=Cp5WWtMoeKg&t=185s" class="peopleLink">Sebastian Lague</a> and
+          <a href="https://www.youtube.com/watch?v=YJ4iyff7zbk&t=453s" class="peopleLink">The Art of Code</a><br>
+          Both are far more productive, experienced and knowledgable than me, so maybe the real takeaway of this derivation is to choose my battles more wisely.
+          There is however something deeply fruitful about reinventing the wheel, despite the glaring loss in productivity.
+          <br>
+          So maybe I'll just keep on rederiving everything, never making something new or expanding on anything, but there will be blackjack and hookers.
+        </p>
+
+        <hr class="mathHr">
+
+        <p>
+          Looking at Iq's article, the example of the polynomial smin seems to be getting a smooth minimum between
+          some decreasing exponential and a sinusoid. That seems a little hard to think about right now with it's many intersection points to account for, so let's just look at a decreasing exponential with one intersection
+        </p>
+        <p class = "mathLine">
+          Our functions; $f(x) = x^2$ and  $g(x) = e^(-x)$.
+        </p>
+        <img src="../misc/smin/smin0.png" class="sminDiagram">
+        <p class="diagramTitle">
+          The simple union for our two functions
+        </p>
+        <img src="../misc/smin/smin1.png" class="sminDiagram">
+        <p>
+          Looking at this hard minimum, we can imagine a smooth curve in its place that connects $f$ and $g$
+          when the functions are sufficiently close to their intersection.
+          But what does sufficiently close mean more precisely, $i.e$ where should the constructed function stop being $f$ and start being $g$?
+        </p>
+        <p class="diagramTitle">
+          Our functions with their difference $d = f(x) - g(x)$
+        </p>
+        <img src="../misc/smin/smin2.png" class="sminDiagram">
+        <p>
+          Now for a reasonably useless aside: <br><br>
+          At first blush, it's not obvious to me how to make a meaningful relationship or constraint between the two functions
+          beyond that they're equal to each other at their intersection. This gives us a point $C$, $d = 0$ and its mapping $x$-value
+        </p>
+        <p>
+          Looking at a given  $ε$  neighborhood around this point, you can see that $d$ must be on the interval $[d(x-ε), d(x+ε)]$
+          which are small, not necessarily identical values.
+        </p>
+        <img src="../misc/smin/sminEpsilon.png" class="sminDiagram">
+        <p>
+          Well, now we're at loss about how to generalize along this line of thinking.
+          And it gets worse, talking about points close to where a root of a function is requires us to know where the root is in the first place. This is a non trivial thing and a whole numerical method in its own right.
+          <br>
+          And even worse... iq's original diagram was of some flavor of a sinusoid and its intersection with a decreasing exponential has infinitely many roots. <br>
+          We're noping on out of here my friend, it's just too messy; we'll need to think of another relationship characteristic of proximity to the intersection.
+        </p>
+        <p>
+          A helpful observation is to note that this $ε$ could be made arbitrarily small, small enough to where
+          $[d(x-ε), d(x+ε)]$
+          is smaller than our original epsilon.
+        </p>
+        <img src="../misc/smin/sminEpsilon2.png" class="sminDiagram">
+        <p>
+          It's also helpful to note that the difference between two polynomials is also a polynomial and that polynomials are continuous everywhere.
+          So, by the intermediate value theorem, for some small value say $k$, $d∈ [-k, k]$.
+          <br><br>
+          "Sufficiently close" to an intersection then could be recast in terms of the difference's value instead of being near its root; the two are isomorphic to each other.
+          <br>
+          Note however that $d$ reaches $-k$ and $k$ at different rates, however slightly different, as discussed previously and if we are planning on using this interval as our generalized way to talk about being close to the intersection
+          our choice of $k$ will affect how the curve stiches to its base functions.
+          In the limit close to $C$ this doesnt matter, but for medium sized choices of $k$ I think you could play around with how $k$ changes before and after $C$ to get something more uniform or weird as you fancy.
+        </p>
+        <p>
+          Well, this is much nicer: we don't need to know anything about the $x$ value for a mapped zero and it's just one valye, some chosen $k$.
+          <br>
+          Now that we at least have a general method of talking about being close to an intersection.
+          (My god, We're only on the second line of iq's derivation...)
+          What should the curve be in that interval?
+          I'm not sure there's an intelligent reason for choosing linear interpolation over something more exotic looking besides
+          that linear interpolation is familiar and more importantly meets our first constraint for our constructed curve/ spline thingy,
+          namely it must be $f$ at the beginning of "being close to the intersection” ($i.e$ at $d = -k$) and
+          $g$ at the end of "being close to the intersection” ($i.e$ at $d = k$).
+        </p>
+        <p class="mathLine">
+          Linear interpolation: <br>
+          $ ξ = (1 - u)f + ug$  :  $u ∈ [0, 1]$ <br>
+          So when $u = 0, ξ = f$ and $u = 0, ξ = g$
+        </p>
+        <p>
+          But we're not necessarily working on the interval $[0, 1]$
+          Thus we have to map our chosen "closeness" interval $[-k, k]$ to $[0, 1]$
+          <br>
+          Like the choice of linear interpolation, linear mapping seems easiest/ most familar:
+        </p>
+        <p class="mathLine">
+          $ℓ = mx + b$ <br>
+          $ℓ(-k) = 0$ and $ℓ(k) = 1$<br>
+          $ℓ(-k) = -mk + b = 0$ ⇒ $b = mk$<br>
+          $ℓ(k) = 2mk  = 1$ ⇒ $m = 1 / {2k}$ <br>
+          ⇒ $b = 1 / 2$<br>
+          $ℓ = x / {2k} + 1/2$<br>
+          but we're interpolating over the difference, not $x$<br>
+          ⇒ $ℓ = d / {2k} + 1/2$<br>
+          also, we don't want to include values outside the "sufficiently close" interval<br>
+          ⇒ we don't want to include the values when $ℓ < 0$ and $ℓ > 1$<br>
+          ⇒ $ℓ =$ max(0, min($1$,  ℓ)<br>
+          in GLSL: $ℓ =$ clamp(ℓ, $0$, $1$)
+        </p>
+        <p>
+          Just using a linear interpolation with the correctly mapped interval gives us a pretty good result:
+        </p>
+        <p class="diagramTitle">
+          $ξ = (1-ℓ)f + ℓg$;
+          $ℓ = d / {2k} + 1/2$ and $k ≈ 0.1$
+        </p>
+        <img src="../misc/smin/firstApproxNaive.png" class="sminDiagram">
+        <p>
+          As expected, our interpolated curve is equal to $f$ and $g$ when $d = -k$ and $d = k$ respectively.
+          This is improved by limiting our ℓ value to only ever be between $0$ and $1$ as reasoned before.
+        </p>
+        <img src="../misc/smin/firstApproxWithClamp.png" class="sminDiagram">
+        <p>
+          What now and how do we improve on this? Well, before we go racking our brains for something more creative, what other constraints exist for our curve?<br>
+          Not only must ξ evaluate to $f$ & $g$ at the "closeness" interval boundaries, but since it's supposed to be smooth
+          its derivative must also match the boundaries' derivatives.<br>
+          So what is ξ's derivative?
+        </p>
+        <p id="dervsMobile" class="mathLine" >
+          $ξ = (1-ℓ)f + ℓg$ <br><br>
+          by the product rule:<br>
+          $d/{dx}ξ = d/{dx}(1-ℓ)*f $<br>
+          $+ d/{dx}f* (1-ℓ)$<br>
+          $+ d/{dx}ℓ*g + d/{dx}g *ℓ$ <br><br>
+          ${dξ}/{dx} = {-dℓ}/{dx}f + {df}/{dx}(1-ℓ)$<br>
+          $+ {dℓ}/{dx}g + {dg}/{dx}ℓ$ <br><br>
+          collecting like terms:<br>
+          ${dξ}/{dx} = {dℓ}/{dx}(g - f) + {df}/{dx}(1-ℓ)$
+          $ + {dg}/{dx}ℓ$ <br><br>
+          at $f - g = -k$:<br>
+          $g - f = k$ and $ℓ = 0$<br><br>
+          ⇒${dξ}/{dx} = {dℓ}/{dx}k+{df}/{dx}$<br><br>
+        </p>
+        <p class="mathLine" id="dervsDesktop">
+          $ξ = (1-ℓ)f + ℓg$ <br><br>
+          by the product rule:<br>
+          $d/{dx}ξ = d/{dx}(1-ℓ)*f + d/{dx}f * (1-ℓ) + d/{dx}ℓ*g + d/{dx}g *ℓ$ <br><br>
+          ${dξ}/{dx} = {-dℓ}/{dx}f + {df}/{dx}(1-ℓ) + {dℓ}/{dx}g + {dg}/{dx}ℓ$ <br><br>
+          collecting like terms:<br>
+          ${dξ}/{dx} = {dℓ}/{dx}(g - f) + {df}/{dx}(1-ℓ) + {dg}/{dx}ℓ$ <br><br>
+          at $f - g = -k$:<br><br>
+          $g - f = k$ and $ℓ = 0$<br><br>
+          ⇒${dξ}/{dx} = {dℓ}/{dx}k+{df}/{dx}$<br><br>
+        <p>
+          But we know that ξ's derivative must equal $f$'s derivative at this boundary<br>
+          Thus we must subtract this extra term from our original expression for $ξ$'s derivative to compensate
+        </p>
+        <p class="mathLine">
+          ⇒${dξ}/{dx} = {dℓ}/{dx}(g - f)$<br>
+          $+ {df}/{dx}(1-ℓ) + {dg}/{dx}ℓ - {dℓ}/{dx}k$
+        </p>
+        <p>
+          Similarly, evaluating ξ's derivative at the other boundary:
+        </p>
+        <p class="mathLine">
+          at $f - g = k$:<br><br>
+          $g - f = -k$ and $ℓ = 1$<br><br>
+          ⇒${dξ}/{dx} = -2{dℓ}/{dx}k + {dg}/{dx}$
+        </p>
+        <p>
+          ξ's derivative must equal $g$'s derivative at this boundary, so we must now add this extra term to our expression for ξ's derivative to compensate<br>
+        </p>
+        <p class="mathLine">
+          ⇒${dξ}/{dx} = {dℓ}/{dx}(g - f) + {df}/{dx}(1-ℓ)$
+          $+ {dg}/{dx}ℓ - {dℓ}/{dx}k + 2{dℓ}/{dx}k$
+        </p>
+        <p>
+          But now we're a bit stuck... after all, doesn't adding this term change what the ξ's derivative will evaluate to at the first boundary? <br>
+          Definitely, and if we were to go back and redo our process we'd be stuck in a vicious cirlce; so we need to have this second boundary corrective term to disappear at the first boundary, but still be around at the second boundary.
+          <br>
+          We're in luck though; just such a term exists and has already been used by us, namely, ℓ.<br>
+          ℓ by design is just such a term, so if we multiply this corrective term by ℓ, it will do precisely what we want it to.
+        </p>
+        <p class="mathLine">
+          ⇒${dξ}/{dx} = {dℓ}/{dx}(g - f) + {df}/{dx}(1-ℓ)$
+          $ + {dg}/{dx}ℓ - {dℓ}/{dx}k + {dℓ}/{dx}2kℓ$
+        </p>
+        <p>
+          Whew, that already feels like clever enough work to stop, but we want the function, not its derivative.<br>
+          So how to integrate this thing? A couple terms are trivial, but let's regroup some of them to make it more obvious
+        </p>
+        <p class="mathLine">
+          ${dξ}/{dx} = {dℓ}/{dx}g + {dg}/{dx}ℓ-({dℓ}/{dx}f + {df}/{dx}ℓ)$<br>
+          $ + {df}/{dx} - {dℓ}/{dx}k+ {dℓ}/{dx}2kℓ$
+          <br>
+          <br>
+          $∫{dξ}/{dx}dx = ∫({dℓ}/{dx}g + {dg}/{dx}ℓ)dx$<br>
+          $-∫({dℓ}/{dx}f + {df}/{dx}ℓ)dx$<br>
+          $ + ∫{df}/{dx}dx - ∫{dℓ}/{dx}kdx$<br>
+          $ + ∫{dℓ}/{dx}2kℓdx$<br><br>
+          reversing the product rule and carrying out the simple integrals
+          <br><br>
+          ⇒$ξ = gℓ - fℓ + f - kℓ + kℓ^2$<br>
+          $ξ = (1 - ℓ)f + ℓg - kℓ(1 - ℓ)$<br><br>
+
+          This is exactly iq's function (mix is just GLSL hardware accelerated linear interpolation)
+          <pre style="margin: 0px; padding: 0px; overflow: hidden;">
+            <code id="codeSomething" class="language-GLSL">
+// polynomial smooth min (k = 0.1);
+float smin( float a, float b, float k )
+{
+    float h = clamp( 0.5+0.5*(b-a)/k, 0.0, 1.0 );
+    return mix( b, a, h ) - k*h*(1.0-h);
+}
+            </code>
+          </pre>
+        </p>
+        <p class=diagramTitle>
+          Our smooth minimum
+        </p>
+        <img src="../misc/smin/sminFinal.png" class="sminDiagram">
+        <p>
+          <h3 style="text-align: center;">
+            Conclusion and general thoughts:
+          </h3>
+        </p>
+        <p>
+          This was a little dive into spline interpolation, we took a nice result from an authoritative source and rederived it from first principles.
+          The function itself, as said by iq, is only $C^1$ continous, but we could extend this with our same approach to be whatever order continuous we like at the expense of performance.
+          Shaders are performance sensitive and the first order polynomial smin is what you mostly see perusing shadertoy. Also stated in the iq's article, this function is not order independent smin(a,smin(b,c)) is not equal to smin(b,smin(a,c)). <br>
+          An example of that can be seen here in this <a href="#">metaball shader</a>
+        </p>
+        <p>
+          Now -cue drum roll- let's make iq's exponential/ sinusoid graph with a shader:<br><br>
+          If you're curious, you can see how I made this shader <a href="#">here</a> (don't worry, it's much shorter than this!)<br>
+          Tl; dr: <br>
+          The big picture is that I'm using the "over operator" to make a graph of functions which is a really common technique, see <a href="https://thebookofshaders.com/05/">this well known resource </a> for more on that.
+          Additionally, I am using a handmade easing function and that is interpolating over the functions' derivatives' values to make the lines more uniform  with some functional conditionals to help out<br>
+          Full shader code can be found <a href="https://github.com/Stranathan/myBookOfShaders/blob/master/smoothMinimum.glsl"> here </a>
+          <br>
+          Anyway, I think this thing is long enough; hopefully it's helped someone besides me. Thank you very much for reading, cheers!
+        </p>
+      </div>
+    </div>
+
+    <script>
+      function menuDropDown()
+      {
+        document.getElementById("drop-down-menu").classList.toggle("show");
+        document.getElementById("dropdown").classList.toggle("change");
+      }
+    </script>
+    <script id="vert-shader" type="notjs">
+
+        precision highp float;
+
+        attribute vec2 a_position;
+        uniform vec2 iResolution;
+
+        void main()
+        {
+        // NDC space
+        vec2 zeroToOne = a_position / iResolution;
+        vec2 zeroToTwo = zeroToOne * 2.0;
+        vec2 clipSpace = zeroToTwo - 1.0;
+        gl_Position = vec4(clipSpace, 0, 1);
+        }
+    </script>
+    <script id="frag-shader" type="notjs">
+
+        precision highp float;
+
+        uniform vec2 iResolution;
+        uniform vec2 iMouse;
+        uniform float iTime;
+
+        #define SCALE (2.)
+        #define PI (3.14159)
+
+        float graph(float tolerance, float function, float axis)
+        {
+            return (smoothstep(function, function + tolerance, axis))
+                 - (smoothstep(function + tolerance, function + 2. * tolerance, axis));
+        }
+
+        float derivativeEasingFunction(float minTolerance, float maxTolerance,
+                                       float maxDerivVal, float derivativeVal)
+        {
+            return ((maxTolerance - minTolerance) * (1. - cos(PI * derivativeVal/ maxDerivVal)) + minTolerance);
+        }
+
+        float when_gt(float x, float y)
+        {
+          return max(sign(x - y), 0.0);
+        }
+
+        float when_lt(float x, float y)
+        {
+          return max(sign(y - x), 0.0);
+        }
+
+        float when_ge(float x, float y)
+        {
+          return 1.0 - when_lt(x, y);
+        }
+
+        float when_le(float x, float y)
+        {
+          return 1.0 - when_gt(x, y);
+        }
+
+        void main()
+        {
+        vec2 uv = SCALE * (2. * gl_FragCoord.xy/iResolution.xy - 1.);
+        uv.x *= iResolution.x / iResolution.y;
+
+        // abitrarily chosen to look nice
+        float minEpsilon = 0.03;
+        float maxEpsilon = 1.6 * minEpsilon;
+
+        // sin(x)
+        float periodNum = 3.;
+        float amplitude = 1.;
+        float sinusoid = amplitude * sin(periodNum * uv.x - 0.5 * iTime);
+        float derivativeSinusoid = periodNum *  amplitude * cos(periodNum * uv.x - 0.5 * iTime);
+        float maxDerivSinusoid = periodNum *  amplitude;
+
+        // e^-x
+        float exponential = exp(-uv.x);
+        float derivativeExponential = -exp(-uv.x);
+        float maxDerivExponential = -exp(0.73); // chosen with helper line -- max visible f(x)
+
+        // smin
+        float kk = 0.5;
+    	  float dd = sinusoid - exponential;
+        float ll = clamp(0.5 + dd / (2. * kk), 0.0, 1.0 );
+        float dlldx = clamp((derivativeSinusoid - derivativeExponential)/ (2. * kk), 0.0, 1.0 );
+        float leSmin = (1. - ll) * sinusoid +  ll * exponential - kk * ll * (1.0 - ll);
+        float derivativeXi = dlldx * (-dd) + derivativeSinusoid * (1. - ll)
+            				   + derivativeExponential * ll - dlldx * kk + dlldx * 2. * kk * ll;
+        float derivativeLeSmin = derivativeXi * when_gt(dd, -kk) + derivativeSinusoid * when_le(dd, -kk);
+
+        // mask for background and making things lighter
+        float mask = length(0.2 * uv);
+        vec3 col = (1. - mask) * vec3(.129, .141, .176);
+
+        // graphs
+        float graphLeSmin = graph(derivativeEasingFunction(minEpsilon, maxEpsilon, maxDerivSinusoid, derivativeLeSmin),
+                             leSmin, uv.y);
+        float graphSinusoid = graph(derivativeEasingFunction(minEpsilon, maxEpsilon, maxDerivSinusoid, derivativeSinusoid),
+                             sinusoid, uv.y);
+        float graphExponential = graph(derivativeEasingFunction(minEpsilon, maxEpsilon, maxDerivExponential, derivativeExponential),
+                             exponential, uv.y);
+
+        // making "draw order"
+        graphSinusoid *= (.6 - graphLeSmin);
+        graphExponential *= (.5 - graphSinusoid) * (1. - graphLeSmin);
+
+        // col and frag
+        col += vec3(0., 0., 1.) * graphSinusoid + vec3(1., 0., 0.) * graphExponential + vec3(0., 1., 0.) * graphLeSmin;
+        gl_FragColor = vec4(col, 1.0);
+        }
+    </script>
+    <!-- WebGL script -->
+    <script type="text/javascript" src="../scripts/fullScreenContextEmbedded.js"></script>
+  </body>
+</html>

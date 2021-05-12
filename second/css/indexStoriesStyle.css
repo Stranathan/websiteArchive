@@ -1,0 +1,40 @@
+body
+{
+    margin: 0;
+    padding: 0;
+}
+    body a:link {
+        font-family: 'Lato', sans-serif;
+        text-decoration: none;
+        text-align: left;
+        font-size: 2.2vh;
+    }
+
+    body a:hover
+    {
+      color: pink;
+    }
+
+canvas
+{
+  position:absolute;
+  left:0;
+  top:0;
+  z-index:-1;
+  width: 100vw;
+  height: 100vh;
+}
+
+@media only screen and (max-width: 600px) {
+    body a:link {
+        font-family: 'Bitter', serif;
+        text-decoration: none;
+        text-align: left;
+        font-size: 1.4vh;
+    }
+
+    body a:hover
+    {
+    color: pink;
+    }
+}

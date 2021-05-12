@@ -1,0 +1,251 @@
+$defualt-line-height: 1.0;
+$default-content-width: 90%;
+$dark: rgb(51, 51, 51);
+$dark-with-transparancy: rgba(51, 51, 51, 0.6);
+$light: rgb(240, 238, 238);
+$light-with-transparency: rgba(240, 238, 238, 0.6);
+$left-indent: 5%;
+$table-of-contents-color: blue;
+
+html 
+{
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    height: 100%;
+}
+body
+{
+    overflow: auto;
+    height: 100%;
+    line-height: $defualt-line-height;
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Lato', sans-serif;
+}
+.grid-container
+{
+    width: 100vw;
+    height:100vh;
+
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 17% auto 5%;
+    background-color: #0876d1;
+    font-size: 1em;
+    grid-gap: 0px 0px;
+
+    #header-container
+    {
+        color: $light;
+        background-color: $dark;
+        grid-row: 1 / span 1;
+        grid-column: 1 / span 1;
+
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: auto auto;
+
+        #name-holder
+        {
+            //text-align: center;
+            padding-left: $left-indent;
+            color: $light;
+            align-self: center;
+            width: $default-content-width;
+            height: auto;
+            margin-top: auto;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: $dark;;
+            grid-row: 1 / span 1;
+            grid-column: 1 / span 1;
+        }
+        #name-holder a
+        {
+            color: $light;
+            text-decoration: none;
+        }
+        #name-holder a:hover
+        {
+            text-decoration: underline;
+        }
+        #menu-bar
+        {
+            width: $default-content-width;
+            height: auto;
+            margin-left: auto;
+            margin-right: auto;
+
+            //text-align: center;
+            align-self: center;
+            background-color: $dark;
+            grid-row: 2 / span 1;
+            grid-column: 1 / span 1;
+
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-template-rows: auto;
+            align-content: space-between;
+            #archive-btn-container
+            {
+                //text-align: center;
+                display: grid;
+                grid-template-columns: auto;
+                grid-template-rows: auto;
+            }
+            #archive-btn-container a{
+                padding-left: 10%;
+                text-decoration: none;
+                color: $light-with-transparency;
+            }
+            #archive-btn-container a:hover{
+                color: $light;
+            }
+            #icon-btns-container
+            {
+                text-align: center;
+                display: grid;
+                grid-template-columns: auto auto auto auto;
+                grid-template-rows: auto;
+            }
+            #icon-btns-container a{
+                color: $light-with-transparency;
+            }
+            #icon-btns-container a:hover{
+                color: $light;
+            }
+        }
+    }
+    #archive-container{
+        background-color: slategrey;
+        grid-row: 2/ span 1;
+        grid-column: 1 / span 1;
+
+        #archive-list
+        {
+            width: $default-content-width;
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: $light;
+            color: $dark;
+
+            display: grid;
+            grid-template-columns: auto;
+            align-content: start;
+            gap: 5px 0px;
+
+            #content{
+                padding: 10px;
+                margin:auto;
+                word-spacing: auto;
+                font-size: 1.2em;
+                line-height: 1.2em;
+                display: grid;
+                grid-template-columns: auto;
+                //overflow: scroll;
+
+                #toc_container {
+                    padding-top: 20%;
+                    background: #f9f9f9;
+                    border: 1px solid #aaa;
+                    display: table;
+                    font-size: 1em;
+                    margin-bottom: 1em;
+                    padding: 20px;
+                    width: auto;
+                }
+                #toc_container a
+                {
+                    text-decoration: none;
+                    color: $table-of-contents-color;
+                    background-color: #f9f9f9;
+                }
+                #toc_container a:hover
+                {
+                    text-decoration: underline;
+                    //text-decoration-color: blue;
+                }
+                .toc_title {
+                    font-weight: 700;
+                    text-align: center;
+                }
+                
+                #toc_container li, #toc_container ul, #toc_container ul li{
+                    list-style: outside none none !important;
+                }
+                
+                #le-line{
+                    border:none;
+                    height:1px;
+                    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 100, from($dark), to($light));
+                }
+
+                .diagram{
+
+                    margin-left: auto;
+                    margin-right: auto;
+                    border-radius: 10px;
+                    //padding-left: 1%;
+                    width: 95%;
+                }
+            }
+            #content a {
+                text-decoration: underline;
+                color: $dark;
+                font-weight: bold;
+            }
+            #content a:hover
+            {
+                background-color: $dark;
+                color: $light;
+            }
+        }
+    }
+    #footer-container{
+        display: grid;
+        overflow:hidden;
+        background-color: $dark;
+        color: $light-with-transparency;
+        grid-row: 3/ span 1;
+        grid-column: 1 / span 1;
+        text-align: center;
+        align-content: center;
+        align-items: center;
+    }
+    #footer-content
+    {
+        font-size: 0.8em;
+    }
+}
+
+@media only screen and (min-width: 1200px)
+{
+
+    $default-content-width:35%;
+    .grid-container
+    {
+        #header-container
+        {
+            #name-holder
+            {
+                width: $default-content-width;
+            }
+            #menu-bar{
+                width: $default-content-width;
+            }
+            #archive-list
+            {
+                width: $default-content-width;
+            }
+        }
+        #archive-container
+        {
+            #archive-list
+            {
+                width: $default-content-width;
+            }
+        }
+    }
+}

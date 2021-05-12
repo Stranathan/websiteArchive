@@ -1,0 +1,30 @@
+body 
+{
+    margin: 0;
+    background-color: lightskyblue;
+}
+#content{
+    width: 80%;
+    height: auto;
+
+    margin-right:auto;
+    margin-left: auto;
+    margin-top: 10vh;
+    
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+#canvasHolder{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    background-color: lightslategrey;
+    height: auto;
+}
+
+#cc{
+    background-color: rgba(46, 90, 110, 0.664);
+    width: 100%;
+    height: auto;
+}

@@ -1,0 +1,116 @@
+@font-face 
+{
+	font-family: "NHaasGrotesk";
+	src: url("../fonts/NHaasGrotesk-55Rg.ttf")
+}
+@font-face 
+{
+	font-family: "MonumentGrotesk";
+	src: url("../fonts/MonumentGrotesk-Regular.otf");
+}
+  
+* 
+{
+	margin:0;
+	padding:0;
+}
+#cc{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	z-index: 10;
+}
+#textureCanvas
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	z-index: 1;
+}
+body
+{
+	margin: 0px;
+	background: #000000;
+	color: #ffffff;
+	font-family: "NHaasGrotesk";
+/* animation: fadeInAnimation ease 3s;
+animation-iteration-count: 1;
+animation-fill-mode: forwards; */
+}
+  
+  /* @keyframes fadeInAnimation {
+      0% {
+          opacity: 0;
+      }
+      100% {
+          opacity: 1;
+       }
+  } */
+  
+.grid
+{
+	display: grid;
+	padding:0;
+	width: 98vw;
+	height: 94vh;
+	grid-template-columns: repeat(12, 8.16vw);
+	grid-template-rows: repeat(15, 6.4vh);
+	margin-top: 3vh;
+	margin-left: 1vw;
+	margin-right: 1vw;
+	margin-bottom: 3vh;
+}
+
+#title-logo
+{
+	width:100%;
+	grid-column: 1 / span 12;
+	grid-row: 1 /span 4;
+}
+
+#about
+{
+	display: inline;
+	position: fixed;
+	bottom:0;
+	letter-spacing: 1;
+	font-size: 2.5vw;
+	line-height: 1.1;
+	width: 60%;
+	margin-bottom: 3vh;
+}
+
+#ask-us-container
+{
+	display: inline;
+	position: fixed;
+	bottom:0;
+	margin-bottom:3vh;
+	right:0;
+	margin-right:1vw;
+}
+
+#ask-us-logo
+{
+	cursor: pointer;
+	width: 10vw;
+	height: 10vw;
+	/* animation: rotation 10s infinite linear; */
+	/* owen is really cool */
+}
+  
+  /* @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(-359deg);
+    }
+  } */
+  
+  
+  

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ian Stranathan</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/blog.css" />
+  </head>
+
+  <body>
+    <div id="top-grid">
+
+      <div id="nav-bar-grid">
+        <div id="name">
+          <a href="../index.html" class="underLineLink">Ian Stranathan</a>
+        </div>
+        <div id="nav-bar-main">
+          <a href="blog.html" class="underLineLink navBarLink">Blog</a>
+          <a href="articles.html" class="underLineLink navBarLink">Articles</a>
+          <a href="indexStories.html" class="underLineLink navBarLink">Stories</a>
+          <a href="#" class="underLineLink navBarLink">Projects</a>
+        </div>
+
+        <div id="dropdown" class="dropdown">
+          <div id="menu-icon-grid" class="menuIcon" onclick="menuDropDown()">
+
+            <div class="menu-icon-bar menuIcon topBar"></div>
+            <div class="menu-icon-bar menuIcon middleBar"></div>
+            <div class="menu-icon-bar menuIcon bottomBar"></div>
+
+          </div>
+          <div id="drop-down-menu" class="dropdown-content">
+
+            <a href="blog.html">Blog</a>
+            <a href="articles.html">Articles</a>
+            <a href="indexStories.html">Stories</a>
+            <a href="#">Projects</a>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div id="content">
+        <div id="articles">
+          <h1 style="text-align: center;">Blog</h1>
+          <span id="le-line"></span>
+          <p class="category">
+            Stack of Shame
+          </p>
+          <a href="#">On Stacks of Shame</a>
+          <br>
+          <br>
+          <a href="#">Gorogoa</a>
+          <br>
+          <br>
+          <a href="#">The Witness</a>
+          <br>
+          <br>
+        </div>
+        <div id="articles-desktop">
+          <div id=title>
+            <h1 style="text-align: center;">Blog</h1>
+            <span id="le-line"></span>
+          </div>
+          <div id=graphics-category>
+            <p class="category">
+              Stack of Shame
+            </p>
+            <a href="#">On Stacks of Shame</a>
+            <br>
+            <br>
+            <a href="#">Gorogoa</a>
+            <br>
+            <br>
+            <a href="#">The Witness</a>
+            <br>
+            <br>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      function menuDropDown()
+      {
+        document.getElementById("drop-down-menu").classList.toggle("show");
+        document.getElementById("dropdown").classList.toggle("change");
+      }
+    </script>
+
+  </body>
+</html>

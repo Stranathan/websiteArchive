@@ -1,0 +1,217 @@
+/*
+    Fonts, rendering, variables and global settings are at top of page, everything else sequentially
+    follows the html layout
+*/
+// ---- fonts
+@font-face 
+{
+    font-family: "NHaasGrotesk";
+    src: url("../fonts/NHaasGrotesk-55Rg.ttf")
+}
+@font-face 
+{
+    font-family: "MonumentGrotesk";
+    src: url("../fonts/MonumentGrotesk-Regular.otf");
+}
+// ---- rendering stuff
+#cc
+{
+    position:fixed;
+    top: 0px;
+    left: 0px;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+}
+#headerTextureCanvas
+{
+    z-index: 1;
+    display: none;
+}
+#bodyTextureCanvas
+{
+    display: none;
+    z-index: 1;
+}
+
+// ---- variables
+// ---- global html elements
+body
+{
+    margin: 0px;
+    padding: 0px;
+    background-color: pink;
+    font-family: "MonumentGrotesk";
+    z-index: -1;
+}
+
+// ---- everything else
+#root-container
+{
+    display: none;
+    margin: 7px;
+    background-color: lightblue;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 10vh 40vh 40vh auto 10vh;
+}
+#header-container
+{
+    background-color: violet;
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: auto;
+    align-items: center;
+    font-size: large;
+}
+    #menu-btn
+    {
+        padding-left: 15px; // this was done by eye and will probably change
+        background-color: rgb(53, 221, 78);
+    }
+    #info-btn
+    {
+        padding-left: 60px;
+        background-color: rgb(77, 133, 86);
+    }
+    #more-projects-btn
+    {
+        padding-right: 15px;
+        background-color: rgb(50, 57, 51);
+    }
+#hero-text-container
+{
+    background-color: aqua;
+    border-bottom: 1px solid;
+}
+#description-and-capabilities-container
+{
+    background-color: orange;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+    justify-content: space-between;
+    align-content: center;
+}
+    #description-container
+    {
+        font-size: 30px;
+        width: 50vw;
+        background-color: rgb(209, 38, 186);
+    }
+    #capability-container
+    {
+        width: 40.5vw;
+        font-size: large;
+        background-color: lightgreen;
+
+        display: grid;
+        grid-template-rows: 30% 70%;
+        grid-template-columns: auto;
+    }
+        .capabilities-item
+        {
+            height: 150%;
+            background-color: aquamarine;
+            font-size: 15px;
+            border-radius: 20px;
+            border: 1px solid black;
+            display: grid;
+            align-content: center;
+        }
+        .capabilities-item-inner
+        {
+            background-color: red;
+        }
+        #capabilities-list
+        {
+            align-content: center;
+            display: grid;
+            grid-gap: 20px;
+            text-align: center;
+            grid-template-rows: auto auto;
+            grid-template-columns: 40% 40%;
+        }
+#portfolio-container
+{
+    background-color: orangered;
+}
+    #portfolio
+    {
+        margin-top: 4%;
+        margin-bottom: 4%;
+        margin-right: 7%;
+        margin-left: 7%;
+        background-color: rosybrown;
+        display: grid;
+        grid-template-columns: repeat(12, auto);
+        grid-template-rows: repeat(10, auto);
+        grid-gap: 15px;
+        font-size: large;
+    }
+        .portfolio-img
+        {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display:block;
+        }
+        #portfolio-item-1
+        {   
+            grid-row: 1 / span 6;
+            grid-column: 1/ span 6;
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: auto auto;
+        }
+        #portfolio-item-2
+        {
+            grid-row: 1 / span 6;
+            grid-column: 7/ span 6;
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: auto auto;
+        }
+        #portfolio-item-3
+        {
+            grid-row: 7 / span 4;
+            grid-column: 1/ span 4;
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: auto auto;
+        }
+        #portfolio-item-4
+        {
+            grid-row: 7 / span 4;
+            grid-column: 5/ span 4;
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: auto auto;
+        }
+        #portfolio-item-5
+        {
+            grid-row: 7 / span 4;
+            grid-column: 9/ span 4;
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: auto auto;
+        }
+#footer-container
+    {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        background-color: white;
+    }
+        .footer-item
+        {
+            display:grid;
+            color: white;
+            background-color: rgba(0, 0, 0, 1);
+            border: 1px solid white;
+            font-size: larger;
+            text-align: center;
+            align-content: center;
+            align-items: center; 
+        }

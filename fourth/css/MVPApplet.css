@@ -1,0 +1,20 @@
+body {
+  margin: 0; }
+
+#top-grid {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto auto; }
+  #top-grid #ui-holder {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto auto auto auto;
+    background-color: lightskyblue;
+    width: 100vw;
+    height: 5vh; }
+  #top-grid #canvas-holder {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto; }
+
+/*# sourceMappingURL=MVPApplet.css.map */

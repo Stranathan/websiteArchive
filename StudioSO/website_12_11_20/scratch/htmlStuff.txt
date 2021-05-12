@@ -1,0 +1,134 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Studio SO</title>
+	<!-- Style -->
+	<link rel="stylesheet" href="../style/third.css">
+	<!-- Utils -->
+	<script src="../utils/gridQuad.js"></script>
+	<script src="../utils/webGLBoilerplateUtils.js"></script>
+	<script src="../utils/coroutineWait.js"></script>
+	<!-- Middleware -->
+    <script src="../middleware/html2canvas/dist/html2canvas.js"></script>
+	<!-- Shader -->
+	<script src="../rendering/headerAnimationShader.js"></script>
+	<script src="../rendering/bodyAnimationShader.js"></script>
+	<!-- Animation Script -->
+	<script src="../scripts/websiteRecast.js" defer></script>
+</head>
+<body>
+	<canvas id="headerGLCanvas"></canvas>
+	<div id="root-container">
+
+		<div id="header-container">
+			<div id="menu-btn">
+				MENU
+			</div>
+			<div id="info-btn">
+				INFO
+			</div>
+			<div id="more-projects-btn">
+				MORE PROJECTS
+			</div>
+		</div>
+
+		<div id="hero-text-container">
+			<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+				<text x = "0" y="16.5" font-weight="bold" font-size="20" textLength="100%" id="svgText">STUDIO SO</text>
+			</svg>
+		</div>
+
+		<div id="description-and-capabilities-container">
+			<div id="description-container">
+				<div>
+					Studio So is a new creative design studio based in Chicago specializing in branding and web design.
+					We love working with people to create meaningful brands and beautiful things.
+				</div>
+			</div>
+
+			<div id="capability-container">
+				<div id="capability-text">
+					CAPABILITY:
+				</div>
+				<div id="capabilities-list">
+					<div class="capabilities-item">
+						<div class="capabilities-item-inner">BRANDING</div>
+					</div>
+					<div class="capabilities-item">
+						<div class="capabilities-item-inner">VERBAL</div>
+					</div>
+					<div class="capabilities-item">
+						<div class="capabilities-item-inner">UX/UI</div>
+					</div>
+					<div class="capabilities-item">
+						<div class="capabilities-item-inner">WEB DEVELOPMENT</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="portfolio-container">
+			<div id="portfolio">
+				<div id="portfolio-item-1">
+					<div>
+						<img src="../images/puddle_escher.jpg" class="portfolio-img">
+					</div>
+					<div>
+						puddle_escher
+					</div>
+				</div>
+				<div id="portfolio-item-2">
+					<div>
+						<img src="../images/puddle_escher.jpg" class="portfolio-img">
+					</div>
+					<div>
+						puddle_escher
+					</div>				
+				</div>
+				<div id="portfolio-item-3">
+					<div>
+						<img src="../images/puddle_escher.jpg" class="portfolio-img">
+					</div>
+					<div>
+						puddle_escher
+					</div>			
+				</div>
+				<div id="portfolio-item-4">
+					<div>
+						<img src="../images/puddle_escher.jpg" class="portfolio-img">
+					</div>
+					<div>
+						puddle_escher
+					</div>			
+				</div>
+				<div id="portfolio-item-5">
+					<div>
+						<img src="../images/puddle_escher.jpg" class="portfolio-img">
+					</div>
+					<div>
+						puddle_escher
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="footer-container">
+			<div class="footer-item">
+				<div>
+					INSTAGRAM 
+				</div>
+			</div>
+			<div class="footer-item">
+				<div>
+					©STUDIO SO 2020
+				</div>
+			</div>
+			<div class="footer-item">
+				<div>
+					EMAIL
+				</div>
+			</div>
+		</div>
+	</div>	
+</body>

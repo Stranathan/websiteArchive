@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+  color: #333;
+  font-size: 24px;
+  line-height: 32px; }
+
+#le-line {
+  display: block;
+  border: none;
+  height: 1px;
+  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 100, from(#333), to(lightgray)); }
+
+#top-grid {
+  background-color: white;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto auto; }
+  #top-grid #nav-bar {
+    background-color: #333;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto;
+    justify-content: center; }
+    #top-grid #nav-bar #home-page-btn {
+      grid-row: 1/ span 1;
+      grid-column: 1/ span 1; }
+    #top-grid #nav-bar #home-page-btn a {
+      text-decoration: none; }
+    #top-grid #nav-bar #home-page-btn a:hover {
+      text-decoration: underline; }
+    #top-grid #nav-bar #projects-page-btn {
+      grid-row: 1/ span 1;
+      grid-column: 2/ span 1; }
+    #top-grid #nav-bar #projects-page-btn a {
+      text-decoration: none; }
+    #top-grid #nav-bar #projects-page-btn a:hover {
+      text-decoration: underline; }
+    #top-grid #nav-bar #writing-page-btn {
+      grid-row: 1/ span 1;
+      grid-column: 3/ span 1; }
+    #top-grid #nav-bar #writing-page-btn a {
+      text-decoration: none; }
+    #top-grid #nav-bar #writing-page-btn a:hover {
+      text-decoration: underline; }
+  #top-grid #nav-bar a {
+    color: whitesmoke; }
+  #top-grid #nav-bar div {
+    padding: 10px; }
+  #top-grid #content {
+    padding: 7px;
+    border: 2px solid black;
+    border-top-style: none;
+    border-right-style: solid;
+    border-bottom-style: none;
+    border-left-style: solid;
+    background-color: rgba(179, 170, 170, 0.3);
+    margin: 0 auto;
+    width: 90%;
+    height: 100%; }
+  #top-grid #content a {
+    color: #333; }
+  #top-grid #content a:hover {
+    background-color: #333;
+    color: white; }
+  #top-grid #content img {
+    border-radius: 20px;
+    display: block;
+    margin: 0 auto;
+    width: 95%;
+    height: auto; }
+
+@media only screen and (min-width: 800px) {
+  body {
+    color: #333;
+    font-size: 26.4px;
+    line-height: 35.2px; }
+
+  #top-grid #content {
+    background-color: rgba(179, 170, 170, 0.3);
+    margin: 0 auto;
+    max-width: 90%;
+    width: 900px; } }
+
+/*# sourceMappingURL=smin.css.map */

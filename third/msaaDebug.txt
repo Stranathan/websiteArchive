@@ -1,0 +1,14 @@
+// -------------- MSAA renderbuffer to initially render to --------------
+    var msaaRenderbuffer = gl.createRenderbuffer();
+    gl.bindRenderbuffer(gl.RENDERBUFFER, msaaRenderbuffer);
+    gl.renderbufferStorageMultisample(gl.RENDERBUFFER, gl.getParameter(gl.MAX_SAMPLES), gl.RGBA8, gl.canvas.width, gl.canvas.height);
+    // -------------- Framebuffer needed for/ attached to MSAA renderbuffer --------------
+    var msaaFramebuffer = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, msaaFramebuffer);
+    // framebufferRenderbuffer ---> from renderbuffer to framebuffer
+    gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, msaaRenderbuffer);
+    // -------------- Framebuffer to blit to from MSAA attached Framebuffer --------------
+    var intermediateFramebuffer = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, intermediateFramebuffer);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, targetTexture, level);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);

@@ -1,0 +1,58 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What I cannot create, I do not understand</title>
+    <!-- FontAwesome -->
+    <script src="https://use.fontawesome.com/2fc622a3be.js"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+    <!-- Utils -->
+    <script src="middleware/gl-matrix-min.js"></script>
+    <script src="utils/webGLBoilerplateUtils.js" defer></script>
+    
+    <!-- Scripts -->
+    <script src="rendering/shaders/barycentricWireframe.js"></script>
+    <script src="rendering/models/highResOBJUtahTeapotOBJ.js"></script>
+    <script src="scripts/arrayedObjLoader.js"></script>
+    <script src="scripts/utahTeapotWireframe.js" defer></script>
+
+</head>
+
+<body>
+  
+    <canvas id="cc"></canvas>
+    <div id="empty"></div>
+	<div id="content">   
+		<h1>About</h1>
+		<p>
+			<span>
+                Hi, I'm Ian. My background is in mathematics and physics, 
+                but these days I mostly toy around with computer graphics.
+            </span>
+        </p>
+        <p>
+			<span>
+                This is just a small site for <a href="#">side projects</a>, the occasional <a href="html/technicalBlog.html">technical blog post</a> 
+                for stuff that I find <a href="https://www.youtube.com/watch?v=Uxa1gLt5YKI">confusing</a> 
+                and miscellaneous <a href="html/blog.html">writing</a>.
+            </span>
+		</p>
+        <div id="down-arrow">
+            
+        </div>
+        <div id="footer-icon-holder" style="padding-bottom: 15px;">
+            <a href="mailto:ian@wabisoft.io"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+            <a href="https://github.com/stranathan"><i class="fa fa-github" aria-hidden="true"></i></a>
+            <a href="https://www.linkedin.com/in/ianstranathan/"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+            <a href="misc/Ian Stranathan_Resume_06.22.20.pdf"><i class="fa fa-file" aria-hidden="true"></i></a>
+        </div>
+	</div>
+</body>
+</html>
