@@ -14,7 +14,8 @@ There are many different resources for you to learn from, here are the ones that
 <li><a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes"> Scratchapixel</a>:  Geometric and algebraic line-sphere intersection derivation.</li>
 <li><a href="http://www.sousakuba.com/Programming/gs_two_lines_intersect.htmls">Susakaba.net</a>:  line segment distance field derivation (google translate is pretty amazing).</li>
 
-Getting something in your head is always the hardest part, so what are we trying to do exactly? We're trying to describe a ray intersecting with a sphere. <br>
+Getting something in your head is always the hardest part, so what are we trying to do exactly?
+
 Let's draw a picture to help our thoughts. We all understand what a line intersecting with a sphere should be like intuitively, but drawing a few different lines immediately shows the possible cases.
 
 ![**The three possible ray-sphere intersections**](images/raySphereIntersection/sketch0.png)
@@ -41,15 +42,15 @@ By convention and since we're working in glsl (directX uses a left handed corrdi
 
 Let $\vec{ro}$, $\vec{s}$ and $\vec{uv}$ be the camera, sphere, and screen space position vectors respectively.
 
-![**Our two paths**](images/raySphereIntersection/sketch1.png)
+![](images/raySphereIntersection/sketch1.png)
 
 A ray, $\vec{r}$, from the ray origin, the "camera", that is incident with the screen can then be given by the vector expression
 $\vec{ro}+\vec{r} = \vec{uv}$
 
-![**Our two paths**](images/raySphereIntersection/sketch2.png)
+![](images/raySphereIntersection/sketch2.png)
 It's difficult to think about initially, but this is all done in parallel, so there is a ray for every $\vec{uv}$.
 
-![**All possible incident rays form a frustrum**](images/raySphereIntersection/sketch3.png)
+![**All possible incident rays form a frustum**](images/raySphereIntersection/sketch3.png)
 
 
 Our goal is to find where these rays that cross the screen uv-plane intersect with a given sphere.
@@ -64,7 +65,7 @@ Let's start with the geometrical one as it's maybe more intuitive (although slig
                         
 Looking at a zx-plane cross section, we can find an intermediary distance inside the sphere using the dot product:
 
-![**All possible incident rays form a frustrum**](images/raySphereIntersection/sketch4.png)
+![**Top-down view of scene**](images/raySphereIntersection/sketch4.png)
 
 
 Let $\vec{u_r}$ be the unit vector of $\vec{r}$, defined as: $ \frac{\vec{r}}{||\vec{r}||} $
@@ -78,7 +79,7 @@ Dropping the norm symbol to save some digital chalk.
 
 $\vec{u_r} ⋅ (\vec{s} - \vec{ro}) = \vec{u_r}(\vec{s} - \vec{ro})cos θ = λ$
 
-![**All possible incident rays form a frustrum**](images/raySphereIntersection/sketch6.png)
+![](images/raySphereIntersection/sketch6.png)
 
 
 $ξ^2 + δ^2 = R^2$; ⇒ $δ = ±(R^2 - ξ^2)^\frac{1}{2}$
@@ -112,13 +113,13 @@ This can be visualized in a shader if this distance is normalized according to l
 
 That was a lot of drawing for so little return. The algebraic approach is much cleaner:
 
-![**All possible incident rays form a frustrum**](images/raySphereIntersection/sketch7.png)
+![](images/raySphereIntersection/sketch7.png)
 
 
 The fundamental notion of a sphere (or circle or whatever dimension sphere thingy) is that the relative position length between its center and any point on its surface must be its radius.
 Written in vector notation with a little manipulation using properties of dot products, we can massage this into a quadratic equation in terms of the unknown incident distance ℓ.
                     
-![**All possible incident rays form a frustrum**](images/raySphereIntersection/sketch8.jpg)
+![](images/raySphereIntersection/sketch8.jpg)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C
 vec2 sphereAlgebraic(vec3 ro, vec3 rd, vec4 ss)
@@ -144,11 +145,11 @@ vec2 sphereAlgebraic(vec3 ro, vec3 rd, vec4 ss)
 The last bit of effort to give a shader visualization is to derive an equation for a line-line intersection in three dimensions which is surprisingly harder than the two dimension version we all learn in gradeschool.
 As usual, we consider the thing we're trying to do with respect to our ray setup:
 
-![**All possible incident rays form a frustrum**](images/raySphereIntersection/sketch9.png)
+![](images/raySphereIntersection/sketch9.png)
 
 Looking at the same set up from a different point of view for some given ray:
 
-![**All possible incident rays form a frustrum**](images/raySphereIntersection/sketch10.jpg)
+![](images/raySphereIntersection/sketch10.jpg)
 
 This is a distance field from the line segment. We can mimic a ray by making this rapidly get bigger and then clamping the values between zero and one.
 
