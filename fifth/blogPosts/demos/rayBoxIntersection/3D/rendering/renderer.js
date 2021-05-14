@@ -39,6 +39,8 @@ class Renderer
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT);
         
+        mat4.perspective(this.projection, 0.5 * Math.PI / 2., (this.gl.canvas.width / this.gl.canvas.height), 1, 100);
+        
         // Update view matrix from changed position
         mat4.lookAt(this.view, [this.pos[0], this.pos[1], this.pos[2]], this.target, [this.up[0], this.up[1], this.up[2]]); 
         

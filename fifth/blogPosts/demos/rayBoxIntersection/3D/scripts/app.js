@@ -10,6 +10,7 @@ class App
 {
     constructor(gl)
     {
+        this.gl = gl;
         this.resourceManager = new ResourceManager(gl);
         this.renderer = new Renderer(gl);
         this.inputManager = new InputManager(gl, this.renderer);
@@ -27,6 +28,7 @@ class App
     update(seconds)
     {
         this.render(seconds);
+        this.renderer
     }
     render(seconds)
     {
