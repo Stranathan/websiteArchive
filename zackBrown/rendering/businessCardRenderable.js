@@ -8,88 +8,74 @@ class BusinessCardRenderable
     constructor(aRenderer, mMatrix)
     {
         this.renderer = aRenderer;
-        
-        // this.modelData = [
-            
-        //     // FRONT
-        //      1.75,  1,   0.05,      1.0, 1.0,
-        //     -1.75,  1,   0.05,      0.0, 1.0,
-        //     -1.75, -1,   0.05,      0.0, 0.0,
+        //
+        this.intersectionParam = 0;
+        this.rayDir = vec3.create();
+        //
+        this.halfLen = CARD_PARAMS[0];
+        this.halfWidth = CARD_PARAMS[1]
+        this.halfThickness = CARD_PARAMS[2];
 
-        //      1.75,  1,   0.05,      1.0, 1.0,
-        //     -1.75, -1,   0.05,      0.0, 0.0,
-        //      1.75, -1,   0.05,      1.0, 0.0,
-        //     // BACK
-        //      1.75,  1,  -0.05,      1.0, 1.0,
-        //     -1.75,  1,  -0.05,      0.0, 1.0,
-        //     -1.75, -1,  -0.05,      0.0, 0.0,
-
-        //      1.75,  1,  -0.05,      1.0, 1.0,
-        //     -1.75, -1,  -0.05,      0.0, 0.0,
-        //      1.75, -1,  -0.05,      1.0, 0.0,
-        // ];
-        this.halfThickness = 0.025
         this.modelData = [
             
             // FRONT
-             1.75,  1,   this.halfThickness,      0.469, 0.684,
-            -1.75,  1,   this.halfThickness,      0.0,   0.684,
-            -1.75, -1,   this.halfThickness,      0.0,   0.0,
+             this.halfLen,  this.halfWidth,   this.halfThickness,      0.469, 0.684,
+            -this.halfLen,  this.halfWidth,   this.halfThickness,      0.0,   0.684,
+            -this.halfLen, -this.halfWidth,   this.halfThickness,      0.0,   0.0,
 
-             1.75,  1,   this.halfThickness,      0.469, 0.684,
-            -1.75, -1,   this.halfThickness,      0.0,   0.0,
-             1.75, -1,   this.halfThickness,      0.469, 0.0,
+             this.halfLen,  this.halfWidth,   this.halfThickness,      0.469, 0.684,
+            -this.halfLen, -this.halfWidth,   this.halfThickness,      0.0,   0.0,
+             this.halfLen, -this.halfWidth,   this.halfThickness,      0.469, 0.0,
             // BACK
-            1.75,  1,   -this.halfThickness,      -0.469, 0.684,
-            -1.75,  1,  -this.halfThickness,      -0.0,   0.684,
-            -1.75, -1,  -this.halfThickness,      -0.0,   0.0,
+            this.halfLen,  this.halfWidth,   -this.halfThickness,      -0.469, 0.684,
+            -this.halfLen,  this.halfWidth,  -this.halfThickness,      -0.0,   0.684,
+            -this.halfLen, -this.halfWidth,  -this.halfThickness,      -0.0,   0.0,
 
-             1.75,  1,  -this.halfThickness,      -0.469, 0.684,
-            -1.75, -1,  -this.halfThickness,      -0.0,   0.0,
-             1.75, -1,  -this.halfThickness,      -0.469, 0.0,
+             this.halfLen,  this.halfWidth,  -this.halfThickness,      -0.469, 0.684,
+            -this.halfLen, -this.halfWidth,  -this.halfThickness,      -0.0,   0.0,
+             this.halfLen, -this.halfWidth,  -this.halfThickness,      -0.469, 0.0,
             // LEFT SIDE
-            1.75,  1,   -this.halfThickness,      0.9, 0.9,
-            1.75,  1,    this.halfThickness,      0.9, 0.9,
-            1.75, -1,    this.halfThickness,      0.9, 0.9,
+            this.halfLen,  this.halfWidth,   -this.halfThickness,      0.9, 0.9,
+            this.halfLen,  this.halfWidth,    this.halfThickness,      0.9, 0.9,
+            this.halfLen, -this.halfWidth,    this.halfThickness,      0.9, 0.9,
 
-            1.75,  1,   -this.halfThickness,      0.9, 0.9,
-            1.75, -1,    this.halfThickness,      0.9, 0.9,
-            1.75, -1,   -this.halfThickness,      0.9, 0.9,
+            this.halfLen,  this.halfWidth,   -this.halfThickness,      0.9, 0.9,
+            this.halfLen, -this.halfWidth,    this.halfThickness,      0.9, 0.9,
+            this.halfLen, -this.halfWidth,   -this.halfThickness,      0.9, 0.9,
             // RIGHT SIDE
-           -1.75,  1,   -this.halfThickness,      0.9, 0.9,
-           -1.75,  1,    this.halfThickness,      0.9, 0.9,
-           -1.75, -1,    this.halfThickness,      0.9, 0.9,
+           -this.halfLen,  this.halfWidth,   -this.halfThickness,      0.9, 0.9,
+           -this.halfLen,  this.halfWidth,    this.halfThickness,      0.9, 0.9,
+           -this.halfLen, -this.halfWidth,    this.halfThickness,      0.9, 0.9,
 
-           -1.75,  1,   -this.halfThickness,      0.9, 0.9,
-           -1.75, -1,    this.halfThickness,      0.9, 0.9,
-           -1.75, -1,   -this.halfThickness,      0.9, 0.9,
+           -this.halfLen,  this.halfWidth,   -this.halfThickness,      0.9, 0.9,
+           -this.halfLen, -this.halfWidth,    this.halfThickness,      0.9, 0.9,
+           -this.halfLen, -this.halfWidth,   -this.halfThickness,      0.9, 0.9,
 
             // TOP
-            1.75,  1,   -this.halfThickness,      0.9, 0.9,
-           -1.75,  1,   -this.halfThickness,      0.9, 0.9,
-           -1.75,  1,    this.halfThickness,      0.9, 0.9,
+            this.halfLen,  this.halfWidth,   -this.halfThickness,      0.9, 0.9,
+           -this.halfLen,  this.halfWidth,   -this.halfThickness,      0.9, 0.9,
+           -this.halfLen,  this.halfWidth,    this.halfThickness,      0.9, 0.9,
 
-            1.75,  1,   -this.halfThickness,      0.9, 0.9,
-           -1.75,  1,    this.halfThickness,      0.9, 0.9,
-            1.75,  1,    this.halfThickness,      0.9, 0.9,
+            this.halfLen,  this.halfWidth,   -this.halfThickness,      0.9, 0.9,
+           -this.halfLen,  this.halfWidth,    this.halfThickness,      0.9, 0.9,
+            this.halfLen,  this.halfWidth,    this.halfThickness,      0.9, 0.9,
 
             //BOTTOM
             // TOP
-            1.75,  -1,   -this.halfThickness,      0.9, 0.9,
-           -1.75,  -1,   -this.halfThickness,      0.9, 0.9,
-           -1.75,  -1,    this.halfThickness,      0.9, 0.9,
+            this.halfLen,  -this.halfWidth,   -this.halfThickness,      0.9, 0.9,
+           -this.halfLen,  -this.halfWidth,   -this.halfThickness,      0.9, 0.9,
+           -this.halfLen,  -this.halfWidth,    this.halfThickness,      0.9, 0.9,
 
-            1.75,  -1,   -this.halfThickness,      0.9, 0.9,
-           -1.75,  -1,    this.halfThickness,      0.9, 0.9,
-            1.75,  -1,    this.halfThickness,      0.9, 0.9,
+            this.halfLen,  -this.halfWidth,   -this.halfThickness,      0.9, 0.9,
+           -this.halfLen,  -this.halfWidth,    this.halfThickness,      0.9, 0.9,
+            this.halfLen,  -this.halfWidth,    this.halfThickness,      0.9, 0.9,
         ];
         
         this.vao;
         this.vbo;
         //
         this.modelMatrix = mMatrix;
-        
-
+        //
         this.vertCount = this.modelData.length / 5;
         this.primitiveType = this.renderer.gl.TRIANGLES;
         this.program;
@@ -127,7 +113,9 @@ class BusinessCardRenderable
         { 
             resolution: this.renderer.gl.getUniformLocation(this.program, "resolution"),
             time: this.renderer.gl.getUniformLocation(this.program, "time"),
+            intersectionParam: this.renderer.gl.getUniformLocation(this.program, "intersectionParam"),
             viewPos: this.renderer.gl.getUniformLocation(this.program, "viewPos"),
+            rayDir: this.renderer.gl.getUniformLocation(this.program, "rayDir"),
             model: this.renderer.gl.getUniformLocation(this.program, "model"),
             view: this.renderer.gl.getUniformLocation(this.program, "view"),
             projection: this.renderer.gl.getUniformLocation(this.program, "projection")
@@ -141,7 +129,9 @@ class BusinessCardRenderable
         //
         this.renderer.gl.uniform1f(this.uniforms["time"], time);
         this.renderer.gl.uniform2f(this.uniforms["resolution"], this.renderer.gl.canvas.width, this.renderer.gl.canvas.height);
-        this.renderer.gl.uniform3f(this.uniforms["viewPos"], this.renderer.pos[0], this.renderer.pos[1], this.renderer.pos[2]);        
+        this.renderer.gl.uniform3f(this.uniforms["viewPos"], this.renderer.pos[0], this.renderer.pos[1], this.renderer.pos[2]);
+        this.renderer.gl.uniform3f(this.uniforms["rayDir"], this.rayDir[0], this.rayDir[1], this.rayDir[2]);
+        this.renderer.gl.uniform1f(this.uniforms["intersectionParam"], this.intersectionParam);
         this.renderer.gl.uniformMatrix4fv(this.uniforms["model"], false, this.modelMatrix); 
         this.renderer.gl.uniformMatrix4fv(this.uniforms["view"], false, this.renderer.view); 
         this.renderer.gl.uniformMatrix4fv(this.uniforms["projection"], false, this.renderer.projection);
