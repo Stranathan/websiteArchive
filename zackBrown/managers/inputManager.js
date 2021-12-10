@@ -43,7 +43,7 @@ class InputManager
         this.spinTimeLength = 5;
         this.spinTimer = 0.0;
         this.angle = 0;
-        //
+        
         window.addEventListener( "mousedown", this.mouseDown);
         window.addEventListener( "mousemove", this.mouseMove);
         window.addEventListener( "mouseup",   this.mouseUp);
