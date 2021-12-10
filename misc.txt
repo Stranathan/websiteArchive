@@ -1,0 +1,97 @@
+<meta charset="utf-8">
+<p style="text-align: center; font-size: x-large; font-weight: bold;">Noodler of Math, Physics & Computer Graphics</p>
+<script src="../scripts/onPost.js"></script>
+
+
+I think there is a deep difference between knowing and understanding
+https://www.youtube.com/watch?v=NM-zWTU7X-k
+To that end, I think trying to make things from scratch is the best way to learn.
+<!-- I usually run into problems and sometimes post about them here. -->
+
+The landing page is a randomized set of shaders made for fun & greasing the groove.
+
+---
+
+Posts grouped by:
+
+* [Math](#Math)
+* [Physics](#Physics)
+* [Graphics](#Graphics)
+* [Projects/ Coding Adventures](#Projects)
+* [Resources](#Resources)
+* [Personal Blog](#PersonalBlog)
+
+<a id="Math"></a>
+<p style="text-align: center; font-size: large;">Math</p>
+
+---
+<a onclick="postClick('math/eulerLagrangeEquation')" href="#">Euler-Lagrange Equation</a>
+
+[Euler-Lagrange Equation](../blogPosts/math/eulerLagrangeEquation.md.html)
+
+<a onclick="postClick('math/angleBisector')" href="#">Angle Bisector Vector</a>
+
+<a onclick="postClick('math/eulerMethod')" href="#">Euler Method</a>
+
+Verlet Integration
+
+<a id="Physics"></a>
+<p style="text-align: center; font-size: large;">Physics</p>
+
+---
+
+<a onclick="postClick('physics/impulseBasedCollisionResolution')" href="#">Impulse Based Collision Resolution</a>
+
+Snell's Law
+<!-- <a onclick="postClick('snellsLaw')" href="#">Snell's Law</a> -->
+
+<a id="Graphics"></a>
+
+<p style="text-align: center; font-size: large;">Graphics</p>
+
+---
+
+<a onclick="postClick('graphics/polynomialSmin')" href="#">Polynomial Smooth Minimum</a>
+
+<a onclick="postClick('graphics/raySphereIntersection')" href="#">Ray-Sphere Intersection</a>
+
+<a onclick="postClick('graphics/rayBoxIntersection')" href="#">Ray-Box Intersection</a>
+
+<a onclick="postClick('graphics/reflectionAndRefractionInARaytracer')" href="#">Reflection & Refraction in a Raytracer</a>
+
+<a onclick="postClick('graphics/modelViewProjection')" href="#">Model-View-Projection</a>
+
+<a onclick="postClick('graphics/halfwayVector')" href="#">Halfway Vector</a>
+
+Viewing a Model & Shadow mapping
+<!-- <a onclick="postClick('viewingAModel')" href="#">Viewing a Model</a> -->
+
+<a id="Projects"></a>
+<p style="text-align: center; font-size: large;">Projects/ Coding Adventures</p>
+
+---
+<a onclick="postClick('projects/2Dphysics')" href="#">WebGL: Impulse Based Collision Response</a>
+
+<a onclick="postClick('projects/learningToRelax')" href="#">WebGL: Learning to Relax</a>
+
+<a onclick="postClick('projects/rubiksCube')" href="#">WebGL: Rubik's Cube</a>
+
+
+
+<a id="Resources"></a>
+<p style="text-align: center; font-size: large;">Resources</p>
+
+---
+
+<a onclick="postClick('resources/graphicsResources')" href="#">Graphics </a>
+
+<a id="PersonalBlog"></a>
+<p style="text-align: center; font-size: large;">Personal Blog</p>
+
+---
+
+<a onclick="postClick('personal/stories')" href="#">Short Stories</a>
+
+<!-- <a onclick="postClick('theGreatWaste')" href="#">The Great Waste</a> -->
+
+<style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

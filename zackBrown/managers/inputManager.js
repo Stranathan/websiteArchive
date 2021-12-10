@@ -6,10 +6,36 @@ class InputManager
 
         this.renderer = aRenderer;
         this.gl = aRenderer.gl;
-
+        //
         this.cameraRay = vec3.create();
         this.mouseMoveCameraRay = vec3.create();
-        //
+        this.p1 = vec3.create();
+        this.p2 = vec3.create();
+        this.mousePos = [0, 0];
+        this.tValuesIndexPtr = 0;
+        this.tValues = [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        ];
+        //;
         this.cardClicked = false;
         this.isSpinning = false;
         this.spinSign = 0;
@@ -25,20 +51,26 @@ class InputManager
     mouseDown = event => 
     {
         // get world ray from camera
-        cameraRay(event, this.renderer, this.cameraRay);
+        cameraRay(event, this.renderer, this.cameraRay, this.mousePos);
         this.cardClicked = aabbRayIntersect(cardAsABox, {ro: this.renderer.pos, rd: this.cameraRay});
+        let t = this.checkPlaneIntersection(this.cameraRay);
+        this.rayPosFromParam(t, this.cameraRay, this.p1)
+        //console.log(vec3.str(this.p1));
     }
+
     mouseMove = event => 
     {
         if(this.cardClicked)
         {
             let camRay = vec3.create();
-            cameraRay(event, this.renderer, camRay);
-
-            this.angle = vec3.angle(this.cameraRay, camRay) / 1.1;
-            this.spinSign = Math.sign(this.cameraRay[0] - camRay[0]);
+            cameraRay(event, this.renderer, camRay, this.mousePos);
+            this.angle = vec3.angle(this.cameraRay, camRay) / ANGLE_SPEED_MULTIPLIER;
+            let t = this.checkPlaneIntersection(camRay);
+            // get position on plane
+            this.rayPosFromParam(t, camRay, this.p2);
+            this.spinSign = Math.sign((this.p2[0] - this.p1[0]) * (-1 * vec3.dot(camRay, WORLD_FORWARD))); // correcting for camera rotation
             let rotMat = mat4.create();
-            mat4.rotateY(rotMat, rotMat, this.spinSign * this.angle);
+            mat4.rotateY(rotMat, rotMat, this.angle * -this.spinSign);
             vec4.transformMat4(this.renderer.pos, this.renderer.pos, rotMat);
             // (IAN) don't forget to rotate up vec if decide to rotate around a differet
             //
@@ -48,53 +80,76 @@ class InputManager
             this.cameraRay = camRay;
         }
         
-        cameraRay(event, this.renderer, this.mouseMoveCameraRay);
-        let tParams = aabbRayIntersect(cardAsABox, {ro: this.renderer.pos, rd: this.mouseMoveCameraRay});
-        let minParam = 100;
+        let mouseClickX = event.offsetX;
+        this.mousePos[0] = (2. * mouseClickX / this.renderer.gl.canvas.width - 1.);
+        let mouseClickY = event.offsetY;
+        this.mousePos[1] = -1 * (2. * mouseClickY / this.renderer.gl.canvas.height - 1.);
 
-        //console.log(tParams);
-        //console.log("!!!!!!!!!!");
-        if(tParams.hit)
-        {
-            for(let t in tParams)
-            {
-                let indexedParam = tParams[t];
-                if(Math.sign(indexedParam) > 0 && indexedParam != true)
-                {
-                    // (IAN) Delete this hacky magic number
-                    if(indexedParam < minParam && indexedParam > 4.9)
-                    {
-                        minParam = indexedParam;
-                    }
-                }
-            }
-        }
-        
-        console.log(minParam);
-        this.renderer.renderables[0].intersectionParam = minParam;
-        this.renderer.renderables[0].rayDir = this.mouseMoveCameraRay;
+        //console.log(this.tValues);
     }
     mouseUp = event => 
     {
         // camera rotation:
         if(this.cardClicked)
         {
+            this.p1 = vec3.create();
+            this.p2 = vec3.create();
+
             this.cardClicked = false;
             this.isSpinning = true;
             this.spinTimer = this.spinTimeLength;
         }
     }
+    checkPlaneIntersection(aRay)
+    {
+        let ro = [this.renderer.pos[0], this.renderer.pos[1], this.renderer.pos[2]];
+        let pointOnAPlane = [0, 0, 0];
+        // which plane are we testing for intersection?
+        if(vec3.dot(aRay, WORLD_FORWARD) > 0)
+        {
+            // then it's the front plane
+            // A is our point on the plane :: preload
+            pointOnAPlane = cardAsABox.A;
+        }
+        else
+        {
+            // it's the back plane
+            // B is our point on the back plane :: preload
+            pointOnAPlane = cardAsABox.B;
+        }
+        // get the parametric data for ray length for this plane
+        let intersectionData = rayPlaneIntersection(ro, aRay, pointOnAPlane, WORLD_FORWARD)
+        return intersectionData.d;
+    }
+    rayPosFromParam(t, aRayDir, p)
+    {
+        let ro = [this.renderer.pos[0], this.renderer.pos[1], this.renderer.pos[2]];
+        let tRd = vec3.create();
+        vec3.scale(tRd, aRayDir, t);
+        vec3.add(p, tRd, ro);
+    }
     update(t, dt)
     {
+        cameraRayNoEvent(this.renderer, this.mouseMoveCameraRay, this.mousePos)
+        // raycast
+        let tParams = aabbRayIntersect(cardAsABox, {ro: this.renderer.pos, rd: this.mouseMoveCameraRay});
+        let tParam = 0; // distance to intersection point
+        // did the ray hit the card?
+
+        if(tParams.hit)
+        {
+            tParam = this.checkPlaneIntersection(this.mouseMoveCameraRay);
+        }
+        // send uniform data to card renderable
+        this.renderer.renderables[0].intersectionParam = tParam;
+        this.renderer.renderables[0].rayDir = this.mouseMoveCameraRay;
+        this.renderer.renderables[0].tValues = this.tValues;
+
         if(this.isSpinning)
         {
-            // mat4.rotateY(
-            //     this.objects[0].modelMatrix,
-            //     this.objects[0].modelMatrix,
-            //     this.spinSign * this.angle * Math.exp(-(this.spinTimeLength - this.spinTimer)));
-
             let rotMat = mat4.create();
-            mat4.rotateY(rotMat, rotMat, this.spinSign * this.spinSign * this.angle * Math.exp(-(this.spinTimeLength - this.spinTimer)));
+            mat4.rotateY(rotMat, rotMat,  -this.spinSign * this.angle * Math.exp(-(this.spinTimeLength - this.spinTimer)));
+            //mat4.rotateY(rotMat, rotMat, 0);
             vec4.transformMat4(this.renderer.pos, this.renderer.pos, rotMat);
 
             this.totalAngle += this.angle;

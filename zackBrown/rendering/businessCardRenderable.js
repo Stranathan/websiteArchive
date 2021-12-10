@@ -16,6 +16,29 @@ class BusinessCardRenderable
         this.halfWidth = CARD_PARAMS[1]
         this.halfThickness = CARD_PARAMS[2];
 
+        this.tValues = [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+          ];
+
         this.modelData = [
             
             // FRONT
@@ -106,6 +129,7 @@ class BusinessCardRenderable
         // this.renderer.gl.vertexAttribPointer(colorAttribLoc, 4, this.renderer.gl.FLOAT, false, (10 * 4), (6 * 4));
         // this.renderer.gl.enableVertexAttribArray(colorAttribLoc);
     }
+    //gl.uniform2fv(renderables[i].uniformLocations[uniform], mousePositions)
     setProgram()
     {
         this.program = createProgramFromSources(this.renderer.gl, businessCardShaderVS, businessCardShaderFS);
@@ -114,6 +138,7 @@ class BusinessCardRenderable
             resolution: this.renderer.gl.getUniformLocation(this.program, "resolution"),
             time: this.renderer.gl.getUniformLocation(this.program, "time"),
             intersectionParam: this.renderer.gl.getUniformLocation(this.program, "intersectionParam"),
+            tValues: this.renderer.gl.getUniformLocation(this.program, "tValues"),
             viewPos: this.renderer.gl.getUniformLocation(this.program, "viewPos"),
             rayDir: this.renderer.gl.getUniformLocation(this.program, "rayDir"),
             model: this.renderer.gl.getUniformLocation(this.program, "model"),
@@ -132,6 +157,7 @@ class BusinessCardRenderable
         this.renderer.gl.uniform3f(this.uniforms["viewPos"], this.renderer.pos[0], this.renderer.pos[1], this.renderer.pos[2]);
         this.renderer.gl.uniform3f(this.uniforms["rayDir"], this.rayDir[0], this.rayDir[1], this.rayDir[2]);
         this.renderer.gl.uniform1f(this.uniforms["intersectionParam"], this.intersectionParam);
+        this.renderer.gl.uniform1fv(this.uniforms["tValues"], this.tValues);
         this.renderer.gl.uniformMatrix4fv(this.uniforms["model"], false, this.modelMatrix); 
         this.renderer.gl.uniformMatrix4fv(this.uniforms["view"], false, this.renderer.view); 
         this.renderer.gl.uniformMatrix4fv(this.uniforms["projection"], false, this.renderer.projection);

@@ -21,8 +21,6 @@ var CLEAR_COL = vec4.fromValues(0.14, 0.14, 0.14, 1.);
 var CARD_THICKNESS = 0.0125;
 var CARD_PARAMS  = [1.75, 1, CARD_THICKNESS]; // len / 2, width 
 var cardAsABox = {A: [-1.75, -1, CARD_THICKNESS], B: [1.75, 1, -CARD_THICKNESS]}; 
+var WORLD_FORWARD = [0., 0., 1];
 
-
-var REL_DIST = vec3.create();
-vec3.subtract(REL_DIST, [-1.75, -1, CARD_THICKNESS], [CAM_POS[0], CAM_POS[1], CAM_POS[2]]);
-var ll = vec3.length(REL_DIST);
+var ANGLE_SPEED_MULTIPLIER = 1.5;
