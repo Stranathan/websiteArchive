@@ -14,7 +14,7 @@ var texCoordAttribLoc = 1;
 //var modelMatrixAttribLoc = 3;
 
 // ------------- Renderer Init Settings -------------
-var CAM_POS = vec4.fromValues(0, 0, -5, 1);
+var CAM_POS = vec4.fromValues(0, 0, 5, 1);
 var WORLD_UP = vec4.fromValues(0, 1, 0, 1);
 var CLEAR_COL = vec4.fromValues(0.14, 0.14, 0.14, 1.);
 //

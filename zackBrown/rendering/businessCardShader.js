@@ -10,14 +10,13 @@ layout (location=1) in vec2 a_texcoord;
 out vec2 v_texcoord;
 out vec3 v_intersectionPos;
 out vec3 v_pos;
-
-//out vec3 v_mousePositions[20];
+out vec3 v_mousePositions[20];
 
 //
 uniform vec3 viewPos;
 uniform vec3 rayDir;
 uniform float intersectionParam;
-//uniform float tValues[20];
+uniform float tValues[20];
 //
 uniform mat4 model;
 uniform mat4 view;
@@ -31,11 +30,11 @@ void main()
     v_texcoord = a_texcoord;
     v_pos = vec3(vertexPos ); // CHANGE ME
 
-    // for(int i = 0; i < 20; i++)
-    // {
-    //     v_mousePositions[i] = viewPos + tValues[i] * rayDir;
-    // }
-    // v_tValues = tValues;
+    for(int i = 0; i < 20; i++)
+    {
+        v_mousePositions[i] = viewPos + tValues[i] * rayDir;
+    }
+    //v_tValues = tValues;
 }
 `
 
@@ -46,7 +45,7 @@ precision highp float;
 in vec2 v_texcoord;
 in vec3 v_intersectionPos;
 in vec3 v_pos;
-//in vec3 v_mousePositions[20];
+in vec3 v_mousePositions[20];
 //
 out vec4 fragColor;
 //
@@ -62,22 +61,33 @@ float smin( float a, float b, float k )
 
 void main()
 {
-    float mask = smoothstep(0.3, 0.31, length(v_pos - v_intersectionPos));
-    vec4 texSample = texture(u_texture, vec2(v_texcoord.x, -v_texcoord.y));
+    //float mask = smoothstep(0.3, 0.31, length(v_pos - v_intersectionPos));
+    
+    float mask = length(v_pos - v_mousePositions[0]);
+    float anotherMask;
+    
+    // for(int i = 1; i < 20; i++)
+    // {
 
+    //     anotherMask = length(v_pos - v_mousePositions[i]);
+    //     mask = smin(mask, anotherMask, 0.7); 
+    // }
+
+    mask = smoothstep(0.1, 0.11, mask);
+
+    vec4 texSample = texture(u_texture, vec2(v_texcoord.x, -v_texcoord.y));
     vec3 col = texSample.xyz * mask + (1. - mask) * 2. * texSample.xyz * (vec3(1.) - texSample.xyz);
     fragColor = vec4(col, 1.0);
 
-    // -------------------------------------------
-
+    // --------------------------------------------------------------------------------------
+    // vec4 texSample = texture(u_texture, vec2(v_texcoord.x, -v_texcoord.y));
     // float val = length(v_pos - v_mousePositions[0]);
     // float nextVal;
-
     // for(int i = 1; i < 20; i++)
     // {
     //     nextVal = length(v_pos - v_mousePositions[i]);
     //     val = smin(val, nextVal, float(i) * 0.2 / 19.0); 
     // }
-    // vec3 col = vec3(smoothstep(0.2, 0.21, val));
-    // fragColor = vec4(texSample.xyz * col, 1.);
+    //vec3 col = vec3(smoothstep(0.2, 0.21, val));
+    //fragColor = vec4(texSample.xyz * col, 1.);
 }`

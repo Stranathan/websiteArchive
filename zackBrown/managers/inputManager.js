@@ -12,7 +12,11 @@ class InputManager
         this.p1 = vec3.create();
         this.p2 = vec3.create();
         this.mousePos = [0, 0];
-        this.tValuesIndexPtr = 0;
+        //
+        this.mouseIsHittingCard = true;
+        //
+        this.tTime = 0.5; // modded seconds in update
+        this.tIndex = 0;
         this.tValues = [
                         0,
                         0,
@@ -52,7 +56,7 @@ class InputManager
     {
         // get world ray from camera
         cameraRay(event, this.renderer, this.cameraRay, this.mousePos);
-        this.cardClicked = aabbRayIntersect(cardAsABox, {ro: this.renderer.pos, rd: this.cameraRay});
+        this.cardClicked = aabbRayIntersect(cardAsABox, {ro: this.renderer.pos, rd: this.cameraRay}).hit;
         let t = this.checkPlaneIntersection(this.cameraRay);
         this.rayPosFromParam(t, this.cameraRay, this.p1)
         //console.log(vec3.str(this.p1));
@@ -80,12 +84,24 @@ class InputManager
             this.cameraRay = camRay;
         }
         
+        // Update mouse position
         let mouseClickX = event.offsetX;
         this.mousePos[0] = (2. * mouseClickX / this.renderer.gl.canvas.width - 1.);
         let mouseClickY = event.offsetY;
         this.mousePos[1] = -1 * (2. * mouseClickY / this.renderer.gl.canvas.height - 1.);
 
-        //console.log(this.tValues);
+        // check to see if mouse is over card for use in update (cheaper than doing in update)
+        cameraRayNoEvent(this.renderer, this.mouseMoveCameraRay, this.mousePos)
+        // raycast
+        this.mouseIsHittingCard = aabbRayIntersect(cardAsABox, {ro: this.renderer.pos, rd: this.mouseMoveCameraRay}).hit;
+   
+        // move all t-positions down
+        for(let i = this.tValues.length - 1; i > 0; i--)
+        {
+            this.tValues[i] = this.tValues[i - 1];
+        }
+
+        console.log(this.tValues);
     }
     mouseUp = event => 
     {
@@ -131,17 +147,14 @@ class InputManager
     update(t, dt)
     {
         cameraRayNoEvent(this.renderer, this.mouseMoveCameraRay, this.mousePos)
-        // raycast
-        let tParams = aabbRayIntersect(cardAsABox, {ro: this.renderer.pos, rd: this.mouseMoveCameraRay});
-        let tParam = 0; // distance to intersection point
-        // did the ray hit the card?
-
-        if(tParams.hit)
+        // let tParam = 0;
+        if(this.mouseIsHittingCard)
         {
-            tParam = this.checkPlaneIntersection(this.mouseMoveCameraRay);
+            //tParam = this.checkPlaneIntersection(this.mouseMoveCameraRay);
+            this.tValues[0] = this.checkPlaneIntersection(this.mouseMoveCameraRay);
         }
         // send uniform data to card renderable
-        this.renderer.renderables[0].intersectionParam = tParam;
+        this.renderer.renderables[0].intersectionParam = 0; //tParam;
         this.renderer.renderables[0].rayDir = this.mouseMoveCameraRay;
         this.renderer.renderables[0].tValues = this.tValues;
 
